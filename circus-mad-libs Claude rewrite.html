@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Circus Mad Libs Deluxe</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+    --red:     #E63946;
+    --navy:    #1D3557;
+    --gold:    #F4A261;
+    --cream:   #F1FAEE;
+    --dark:    #0d1b2a;
+    --panel:   rgba(255,255,255,0.04);
+    --border:  rgba(255,255,255,0.08);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: "DM Sans", sans-serif;
+    background: var(--dark);
+    color: var(--cream);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
+/* ── HEADER ── */
+header {
+    text-align: center;
+    padding: 32px 24px 18px;
+    background: linear-gradient(180deg, #0a1628 0%, transparent 100%);
+    position: relative;
+}
+
+header::before {
+    content: "🎪";
+    font-size: 2.2rem;
+    display: block;
+    margin-bottom: 6px;
+    animation: sway 3s ease-in-out infinite;
+}
+
+@keyframes sway {
+    0%,100% { transform: rotate(-5deg); }
+    50%      { transform: rotate(5deg); }
+}
+
+header h1 {
+    font-family: "Playfair Display", serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 900;
+    letter-spacing: -1px;
+    background: linear-gradient(135deg, var(--gold), var(--red));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+header p {
+    font-size: 0.85rem;
+    color: rgba(241,250,238,0.4);
+    margin-top: 4px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+/* ── COUNTER CHIP ── */
+#story-counter {
+    display: inline-block;
+    margin-top: 10px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 0.75rem;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+}
+
+/* ── MAIN LAYOUT ── */
+main {
+    display: grid;
+    grid-template-columns: 300px 1fr 240px;
+    gap: 0;
+    flex: 1;
+    height: calc(100vh - 130px);
+}
+
+/* ── PANELS ── */
+.panel {
+    padding: 28px 22px;
+    overflow-y: auto;
+    border-right: 1px solid var(--border);
+}
+.panel:last-child { border-right: none; }
+
+#left-panel  { background: var(--panel); }
+#story-panel { background: transparent; }
+#hist-panel  { background: rgba(0,0,0,0.25); }
+
+/* ── SECTION HEADINGS ── */
+.panel-title {
+    font-family: "Playfair Display", serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* ── INPUTS ── */
+.field {
+    margin-bottom: 14px;
+}
+
+.field label {
+    display: block;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: rgba(241,250,238,0.55);
+    margin-bottom: 5px;
+}
+
+.type-badge {
+    display: inline-block;
+    font-size: 0.62rem;
+    padding: 1px 7px;
+    border-radius: 10px;
+    margin-left: 5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    vertical-align: middle;
+}
+.badge-noun      { background: #2a6496; color: #a8d4f5; }
+.badge-verb      { background: #5a3a6e; color: #d4a8f5; }
+.badge-adjective { background: #6e4a1a; color: #f5d4a8; }
+.badge-adverb    { background: #1a6e4a; color: #a8f5d4; }
+
+.field input {
+    width: 100%;
+    padding: 9px 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.06);
+    color: var(--cream);
+    font-family: "DM Sans", sans-serif;
+    font-size: 0.9rem;
+    transition: border-color 0.2s, background 0.2s;
+    outline: none;
+}
+
+.field input:focus {
+    border-color: var(--gold);
+    background: rgba(244,162,97,0.08);
+}
+
+.field input::placeholder { color: rgba(255,255,255,0.2); }
+
+/* ── BUTTONS ── */
+.btn {
+    width: 100%;
+    padding: 10px 14px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: "DM Sans", sans-serif;
+    font-size: 0.88rem;
+    font-weight: 500;
+    transition: transform 0.15s, opacity 0.15s, box-shadow 0.15s;
+    letter-spacing: 0.02em;
+}
+.btn:hover  { opacity: 0.88; transform: translateY(-1px); }
+.btn:active { transform: translateY(0); }
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--red), #c1121f);
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(230,57,70,0.35);
+}
+
+.btn-secondary {
+    background: rgba(255,255,255,0.07);
+    color: var(--cream);
+    border: 1px solid var(--border);
+}
+
+.btn-ghost {
+    background: transparent;
+    color: rgba(241,250,238,0.5);
+    border: 1px solid rgba(255,255,255,0.08);
+    margin-top: 6px;
+    font-size: 0.78rem;
+}
+
+/* ── STORY OUTPUT ── */
+#story-panel { padding: 40px 48px; }
+
+#story {
+    font-family: "Playfair Display", serif;
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    line-height: 1.9;
+    color: rgba(241,250,238,0.85);
+}
+
+#story.empty {
+    color: rgba(241,250,238,0.2);
+    font-style: italic;
+    font-size: 1.1rem;
+}
+
+.blank {
+    background: linear-gradient(135deg, var(--gold), #e07c3a);
+    color: var(--dark);
+    padding: 1px 10px;
+    border-radius: 5px;
+    font-weight: 700;
+    display: inline-block;
+    transform: scale(0) rotate(-6deg);
+    animation: popIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes popIn {
+    0%   { transform: scale(0) rotate(-6deg); opacity: 0; }
+    100% { transform: scale(1) rotate(0deg);  opacity: 1; }
+}
+
+/* stagger blanks */
+.blank:nth-child(1) { animation-delay: 0.05s; }
+.blank:nth-child(2) { animation-delay: 0.15s; }
+.blank:nth-child(3) { animation-delay: 0.25s; }
+.blank:nth-child(4) { animation-delay: 0.35s; }
+.blank:nth-child(5) { animation-delay: 0.45s; }
+
+/* copy row */
+#copy-row {
+    display: none;
+    margin-top: 24px;
+    gap: 10px;
+}
+#copy-row.visible { display: flex; }
+
+#copy-btn {
+    padding: 8px 18px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    color: var(--cream);
+    cursor: pointer;
+    font-family: "DM Sans", sans-serif;
+    font-size: 0.82rem;
+    transition: background 0.2s;
+}
+#copy-btn:hover { background: rgba(255,255,255,0.13); }
+
+#new-story-btn {
+    padding: 8px 18px;
+    background: rgba(230,57,70,0.15);
+    border: 1px solid rgba(230,57,70,0.3);
+    border-radius: 7px;
+    color: var(--red);
+    cursor: pointer;
+    font-family: "DM Sans", sans-serif;
+    font-size: 0.82rem;
+    transition: background 0.2s;
+}
+#new-story-btn:hover { background: rgba(230,57,70,0.25); }
+
+/* ── HISTORY ── */
+#hist-panel { font-size: 0.78rem; }
+
+.hist-item {
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+    animation: fadeSlide 0.3s ease;
+}
+
+@keyframes fadeSlide {
+    from { opacity: 0; transform: translateX(10px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+.hist-meta {
+    color: rgba(241,250,238,0.3);
+    font-size: 0.68rem;
+    margin-bottom: 4px;
+    letter-spacing: 0.04em;
+}
+
+.hist-text {
+    color: rgba(241,250,238,0.65);
+    line-height: 1.55;
+}
+
+.hist-text .blank {
+    font-size: 0.72rem;
+    padding: 0 5px;
+    animation: none;
+    transform: none;
+}
+
+#hist-empty {
+    color: rgba(241,250,238,0.2);
+    font-style: italic;
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 860px) {
+    main { grid-template-columns: 1fr; height: auto; }
+    .panel { border-right: none; border-bottom: 1px solid var(--border); }
+    #story-panel { padding: 28px 22px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Circus Mad Libs</h1>
+  <p>Fill in the words, make a story</p>
+  <div id="story-counter">Story #1</div>
+</header>
+
+<main>
+
+  <!-- LEFT: Inputs -->
+  <div class="panel" id="left-panel">
+    <div class="panel-title">✏️ Your Words</div>
+    <div id="inputs"></div>
+    <button class="btn btn-primary" id="gen-btn">Generate Story</button>
+    <button class="btn btn-secondary" id="lucky-btn">I'm Feeling Lucky 🎲</button>
+  </div>
+
+  <!-- CENTER: Story -->
+  <div class="panel" id="story-panel">
+    <div class="panel-title">📖 Your Story</div>
+    <div id="story" class="empty">Your story will appear here once you fill in the words and hit Generate.</div>
+    <div id="copy-row">
+      <button id="copy-btn">📋 Copy Story</button>
+      <button id="new-story-btn">↻ New Story</button>
+    </div>
+  </div>
+
+  <!-- RIGHT: History -->
+  <div class="panel" id="hist-panel">
+    <div class="panel-title">🕰 History</div>
+    <div id="hist-list">
+      <div id="hist-empty">No stories yet.</div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+// ─────────────────────────────────────────────
+// DATA
+// ─────────────────────────────────────────────
+
+const stories = [
+  [
+    { text: "Last night at the circus, a",                                     type: "adjective" },
+    { text: "clown dropped a",                                                 type: "noun"      },
+    { text: "and tried to",                                                    type: "verb"      },
+    { text: "while the audience screamed",                                     type: "adverb"    },
+    { text: "as the tent collapsed in the most",                               type: "adjective" },
+    { text: "way imaginable. Even afterward the same clown picked it all up and tried to recover the show." }
+  ],
+  [
+    { text: "On the car ride to dinner, our",                                  type: "adjective" },
+    { text: "family heard a loud pop as the",                                  type: "noun"      },
+    { text: "decided to",                                                      type: "verb"      },
+    { text: "right in traffic. Dad reacted",                                   type: "adverb"    },
+    { text: "declaring it the most",                                           type: "adjective" },
+    { text: "tire failure in recorded history. We stood on the roadside wondering if anything in the trunk could possibly help." }
+  ],
+  [
+    { text: "At dinner, the waitress carrying four giant milkshakes looked incredibly", type: "adjective" },
+    { text: "when she tripped over a",                                         type: "noun"      },
+    { text: "and tried to",                                                    type: "verb"      },
+    { text: "before gravity won. The milkshakes landed",                       type: "adverb"    },
+    { text: "on the baby's head in the most",                                  type: "adjective" },
+    { text: "splash ever recorded. Chocolate dripped everywhere while the whole restaurant stared in disbelief." }
+  ]
+];
+
+const funnyWords = {
+  noun:      ["pickle","llama","toaster","spaceship","rubber chicken","marshmallow","taco"],
+  verb:      ["explode","wiggle","teleport","sneeze","moonwalk","panic","levitate"],
+  adjective: ["sparkly","confused","gigantic","wobbly","mysterious","fluffy"],
+  adverb:    ["awkwardly","dramatically","suspiciously","wildly","gracefully"]
+};
+
+// ─────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────
+
+let currentStory   = [];
+let storySlots     = [];   // [{type, inputId}] — one entry per typed slot, in story order
+let storyCount     = 1;
+let audioCtx       = null;
+let musicStarted   = false;
+
+// ─────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────
+
+function init() {
+  pickStory();
+  buildInputs();
+
+  document.getElementById("gen-btn").addEventListener("click", generateStory);
+  document.getElementById("lucky-btn").addEventListener("click", fillLucky);
+  document.getElementById("copy-btn").addEventListener("click", copyStory);
+  document.getElementById("new-story-btn").addEventListener("click", nextStory);
+}
+
+function pickStory() {
+  currentStory = stories[Math.floor(Math.random() * stories.length)];
+}
+
+// ─────────────────────────────────────────────
+// BUILD INPUTS — slots follow story order, no shuffle
+// ─────────────────────────────────────────────
+
+function buildInputs() {
+  const container = document.getElementById("inputs");
+  container.innerHTML = "";
+  storySlots = [];
+
+  currentStory.forEach((part, partIndex) => {
+    if (!part.type) return;
+
+    const id = "slot-" + partIndex;
+    storySlots.push({ type: part.type, inputId: id });
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "field";
+
+    const label = document.createElement("label");
+    const badge = `<span class="type-badge badge-${part.type}">${part.type}</span>`;
+    label.innerHTML = `Word ${storySlots.length} ${badge}`;
+
+    const input = document.createElement("input");
+    input.id          = id;
+    input.type        = "text";
+    input.placeholder = `a ${part.type}…`;
+    input.addEventListener("keydown", e => {
+      if (e.key === "Enter") generateStory();
+    });
+
+    wrapper.appendChild(label);
+    wrapper.appendChild(input);
+    container.appendChild(wrapper);
+  });
+}
+
+// ─────────────────────────────────────────────
+// GENERATE STORY
+// ─────────────────────────────────────────────
+
+function generateStory() {
+  startMusic();
+
+  // Collect words in story order
+  const wordMap = {};
+  storySlots.forEach(slot => {
+    const val = document.getElementById(slot.inputId).value.trim();
+    wordMap[slot.inputId] = val || "???";
+  });
+
+  let storyHTML  = "";
+  let slotIndex  = 0;
+
+  currentStory.forEach(part => {
+    storyHTML += part.text + " ";
+    if (part.type) {
+      const slot = storySlots[slotIndex++];
+      const word = wordMap[slot.inputId];
+      storyHTML += `<span class="blank">${escapeHTML(word)}</span> `;
+    }
+  });
+
+  // Display story
+  const storyEl = document.getElementById("story");
+  storyEl.classList.remove("empty");
+  storyEl.innerHTML = storyHTML;
+
+  // Show action row
+  document.getElementById("copy-row").classList.add("visible");
+
+  // Add to history
+  addToHistory(storyHTML);
+}
+
+// ─────────────────────────────────────────────
+// HISTORY
+// ─────────────────────────────────────────────
+
+function addToHistory(html) {
+  document.getElementById("hist-empty").style.display = "none";
+
+  const item = document.createElement("div");
+  item.className = "hist-item";
+
+  const now  = new Date();
+  const time = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
+  const meta = document.createElement("div");
+  meta.className   = "hist-meta";
+  meta.textContent = `Story #${storyCount} · ${time}`;
+
+  const text = document.createElement("div");
+  text.className = "hist-text";
+  text.innerHTML = html;
+
+  item.appendChild(meta);
+  item.appendChild(text);
+
+  document.getElementById("hist-list").prepend(item);
+  storyCount++;
+  document.getElementById("story-counter").textContent = `Story #${storyCount}`;
+}
+
+// ─────────────────────────────────────────────
+// NEXT STORY (separate from generate)
+// ─────────────────────────────────────────────
+
+function nextStory() {
+  pickStory();
+  buildInputs();
+  document.getElementById("story").classList.add("empty");
+  document.getElementById("story").innerHTML = "Fill in the words above and hit Generate.";
+  document.getElementById("copy-row").classList.remove("visible");
+}
+
+// ─────────────────────────────────────────────
+// LUCKY FILL
+// ─────────────────────────────────────────────
+
+function fillLucky() {
+  storySlots.forEach(slot => {
+    const pool = funnyWords[slot.type];
+    const pick = pool[Math.floor(Math.random() * pool.length)];
+    document.getElementById(slot.inputId).value = pick;
+  });
+}
+
+// ─────────────────────────────────────────────
+// COPY
+// ─────────────────────────────────────────────
+
+function copyStory() {
+  const text = document.getElementById("story").innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById("copy-btn");
+    btn.textContent = "✓ Copied!";
+    setTimeout(() => btn.textContent = "📋 Copy Story", 1800);
+  });
+}
+
+// ─────────────────────────────────────────────
+// MUSIC — AudioContext created on first interaction only
+// ─────────────────────────────────────────────
+
+function startMusic() {
+  if (musicStarted) return;
+  musicStarted = true;
+
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+  // Simple circus-ish note sequence
+  const notes = [261, 294, 330, 349, 392, 349, 330, 294];
+  let step = 0;
+
+  function playNote() {
+    const osc  = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = "triangle";
+    osc.frequency.value = notes[step % notes.length];
+    gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.4);
+    step++;
+  }
+
+  playNote();
+  setInterval(playNote, 520);
+}
+
+// ─────────────────────────────────────────────
+// UTILS
+// ─────────────────────────────────────────────
+
+function escapeHTML(str) {
+  return str.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+
+window.addEventListener("load", init);
+</script>
+</body>
+</html>
