@@ -25,3 +25,7 @@ https://badenaaron-oss.github.io/Circus-Mad-Libs/
 - Sound effects
 - Mobile layout optimization
 - More dynamic story templates
+
+## Screenshot
+
+![Circus Mad Libs Screenshot](screenshot.png)
