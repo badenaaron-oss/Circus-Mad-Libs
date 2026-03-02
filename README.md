@@ -17,7 +17,9 @@ Built to experiment with:
 - Creative storytelling mechanics
 
 ## Live Demo
-(Add GitHub Pages link here if you publish it)
+
+Play it here:
+https://badenaaron-oss.github.io/Circus-Mad-Libs/
 
 ## Future Improvements
 - Sound effects
