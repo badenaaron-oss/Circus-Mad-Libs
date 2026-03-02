@@ -16,6 +16,10 @@ Built to experiment with:
 - Client-side JavaScript logic
 - Creative storytelling mechanics
 
+## Screenshot
+
+![Circus Mad Libs Screenshot](screenshot.png)
+
 ## Live Demo
 
 Play it here:
@@ -25,7 +29,3 @@ https://badenaaron-oss.github.io/Circus-Mad-Libs/
 - Sound effects
 - Mobile layout optimization
 - More dynamic story templates
-
-## Screenshot
-
-![Circus Mad Libs Screenshot](screenshot.png)
