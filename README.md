@@ -1,6 +1,6 @@
 # Circus MadLibs Generator 🎪
 
-An interactive web-based MadLibs game built using Vibe=-Coded HTML, CSS, and JavaScript.
+An interactive web-based MadLibs game built using Vibe-Coded HTML, CSS, and JavaScript.
 
 ## Features
 - User-input word fields
